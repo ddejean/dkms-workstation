@@ -7,7 +7,7 @@
 #
 
 KERNEL := $(KERNELRELEASE)
-HEADERS := /usr/src/linux-$(KERNEL)/include
+HEADERS := /usr/lib/modules/$(KERNEL)/build/include
 GCC := $(shell vmware-modconfig --console --get-gcc)
 DEST := /lib/modules/$(KERNEL)/vmware
 
@@ -21,13 +21,12 @@ all: $(LOCAL_MODULES)
 	rm -rf $(DEST)
 	depmod
 
-/usr/src/linux-$(KERNEL)/include/linux/version.h:
-	ln -s /usr/src/linux-$(KERNEL)/include/generated/uapi/linux/version.h /usr/src/linux-$(KERNEL)/include/linux/version.h
+$(HEADERS)/linux/version.h:
+	ln -s $(HEADERS)/generated/uapi/linux/version.h $(HEADERS)/linux/version.h
 
-%.ko: /usr/src/linux-$(KERNEL)/include/linux/version.h
+%.ko: $(HEADERS)/linux/version.h
 	vmware-modconfig --console --build-mod -k $(KERNEL) $* $(GCC) $(HEADERS) vmware/
 	cp -f $(DEST)/$*.ko .
 
 clean:
 	rm -rf modules/
-
