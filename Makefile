@@ -26,7 +26,7 @@ $(HEADERS)/linux/version.h:
 
 %.ko: $(HEADERS)/linux/version.h
 	vmware-modconfig --console --build-mod -k $(KERNEL) $* $(GCC) $(HEADERS) vmware/
-	cp -f $(DEST)/$*.ko .
+	cp -f $(DEST)/$@ .
 
 clean:
 	rm -rf modules/
