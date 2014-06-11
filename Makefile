@@ -7,7 +7,7 @@
 #
 
 KERNEL := $(KERNELRELEASE)
-HEADERS := /usr/lib/modules/$(KERNEL)/build/include
+HEADERS := $(shell dir /usr/src/linux-$(KERNEL)/include >/dev/null 2>/dev/null && echo /usr/src/linux-$(KERNEL)/include || echo /usr/lib/modules/$(KERNEL)/build/include)
 GCC := $(shell vmware-modconfig --console --get-gcc)
 DEST := /lib/modules/$(KERNEL)/vmware
 
